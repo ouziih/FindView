@@ -8,7 +8,6 @@ import {
   MessageCircle, 
   CheckCircle2, 
   Calendar, 
-  Eye, 
   Tag
 } from 'lucide-react';
 
@@ -26,10 +25,10 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
       return `Dès ${service.price} ${service.currency} (Sur devis)`;
     }
     if (service.pricingType === 'hourly') {
-      return `${service.price} ${service.currency} / heure`;
+      return `${service.price} ${service.currency} / h`;
     }
     if (service.pricingType === 'daily') {
-      return `${service.price} ${service.currency} / jour`;
+      return `${service.price} ${service.currency} / j`;
     }
     return `${service.price} ${service.currency}`;
   };
@@ -56,37 +55,39 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
   return (
     <article 
       onClick={() => setSelectedService(service)}
-      className="bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col group cursor-pointer hover:-translate-y-1 relative"
+      className="bg-white rounded-2xl border border-stone-200/90 shadow-xs hover:border-stone-400 hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col group cursor-pointer"
     >
-      {/* Image Thumbnail with Overlay Badges */}
-      <div className="relative h-48 sm:h-52 bg-slate-100 overflow-hidden">
+      {/* Image Thumbnail with Controlled Overlays */}
+      <div className="relative h-48 bg-stone-100 overflow-hidden">
         <img
           src={service.images[0] || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&auto=format&fit=crop&q=80'}
           alt={service.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
           loading="lazy"
         />
         
-        {/* Custom Branding Badge */}
+        {/* Subtle scrim for readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
+        {/* Custom Branding Badge (Dignified styling) */}
         {service.customBranding?.badgeText && (
           <div className="absolute top-3 left-3">
-            <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md ${service.customBranding.badgeColor || 'bg-amber-600 text-white'}`}>
+            <span className="text-[10px] font-bold tracking-wide uppercase px-2.5 py-1 rounded-md bg-stone-900/90 text-white backdrop-blur-xs border border-white/10 shadow-xs">
               {service.customBranding.badgeText}
             </span>
           </div>
         )}
 
-        {/* Category Pill */}
+        {/* Category Unboxed Tag */}
         <div className="absolute bottom-3 left-3">
-          <span className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-slate-900/80 backdrop-blur-sm text-white flex items-center gap-1">
-            <Tag className="w-3 h-3" />
+          <span className="text-[11px] font-medium text-white/90 drop-shadow-xs">
             {service.categoryName}
           </span>
         </div>
 
-        {/* Pricing Badge */}
+        {/* Price Tag */}
         <div className="absolute bottom-3 right-3">
-          <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-amber-500 text-white shadow-md">
+          <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-white text-stone-900 shadow-sm tabular-nums">
             {formatPrice()}
           </span>
         </div>
@@ -95,79 +96,72 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
       {/* Content Body */}
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div>
-          {/* Provider Mini Header */}
-          <div className="flex items-center justify-between gap-2 mb-2.5">
+          {/* Provider Mini Header (Unboxed & Clean) */}
+          <div className="flex items-center justify-between gap-2 mb-2">
             <div className="flex items-center gap-2">
               <img
                 src={service.providerAvatar}
-                alt={service.providerName}
-                className="w-7 h-7 rounded-full object-cover ring-1 ring-amber-500"
+                alt=""
+                className="w-6 h-6 rounded-full object-cover ring-1 ring-stone-200"
               />
-              <div className="text-xs">
-                <span className="font-semibold text-slate-800 flex items-center gap-1">
-                  {service.providerName}
-                  {service.providerVerified && (
-                    <span title="Prestataire vérifié KYC">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 fill-blue-50" />
-                    </span>
-                  )}
-                </span>
-              </div>
+              <span className="text-xs font-semibold text-stone-800 flex items-center gap-1">
+                {service.providerName}
+                {service.providerVerified && (
+                  <span title="Prestataire vérifié KYC">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-stone-700 fill-stone-100" />
+                  </span>
+                )}
+              </span>
             </div>
 
             {/* Rating */}
-            <div className="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded text-xs font-bold text-amber-800">
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              <span>{service.providerRating.toFixed(1)}</span>
+            <div className="flex items-center gap-1 text-xs font-semibold text-stone-700">
+              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+              <span className="font-mono tabular-nums">{service.providerRating.toFixed(1)}</span>
             </div>
           </div>
 
           {/* Title */}
-          <h3 className="font-bold text-slate-900 text-base leading-snug line-clamp-2 group-hover:text-amber-600 transition-colors mb-2">
+          <h3 className="font-bold text-stone-900 text-sm leading-snug line-clamp-2 group-hover:text-[#B8522E] transition-colors mb-1.5">
             {service.title}
           </h3>
 
           {/* Description snippet */}
-          <p className="text-slate-600 text-xs line-clamp-2 mb-3 leading-relaxed">
+          <p className="text-stone-500 text-xs line-clamp-2 mb-3 leading-relaxed">
             {service.description}
           </p>
 
-          {/* Location */}
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-3">
-            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="truncate">{service.city}</span>
-          </div>
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1 mb-4">
-            {service.tags.slice(0, 3).map((tag, idx) => (
-              <span key={idx} className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
-                #{tag}
-              </span>
-            ))}
+          {/* Unboxed Metadata Line (Zero-Pill discipline) */}
+          <div className="flex items-center gap-1.5 text-[11px] text-stone-400 mb-4">
+            <MapPin className="w-3 h-3 text-stone-400 shrink-0" />
+            <span className="truncate text-stone-600">{service.city}</span>
+            <span>·</span>
+            <span className="truncate text-stone-500">{service.tags.slice(0, 2).join(' · ')}</span>
           </div>
         </div>
 
-        {/* Footer Actions: Contact & Booking */}
-        <div className="pt-3 border-t border-slate-100 space-y-2">
-          {/* Quick Contact Icons */}
-          <div className="flex items-center justify-between text-xs text-slate-500">
-            <span className="font-medium text-slate-400 text-[11px]">Joindre directement :</span>
+        {/* Footer Actions: Contact & Booking in Cohesive Palette */}
+        <div className="pt-3 border-t border-stone-100 space-y-2">
+          
+          {/* Quick Contact Row */}
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-stone-400 text-[11px]">Direct :</span>
             <div className="flex items-center gap-1.5">
               {/* WhatsApp direct */}
               <button
                 onClick={openWhatsApp}
-                className="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors"
+                className="px-2 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-800 font-medium text-[11px] transition-colors flex items-center gap-1"
                 title={`Discuter sur WhatsApp (${service.providerWhatsapp})`}
                 aria-label="Contacter sur WhatsApp"
               >
-                <span className="font-bold text-[11px] px-1">WA</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                <span className="font-mono font-bold text-[10px]">WhatsApp</span>
               </button>
 
               {/* Direct Call */}
               <button
                 onClick={callPhone}
-                className="p-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors"
+                className="p-1.5 rounded-lg bg-stone-100 text-stone-700 hover:bg-stone-200 transition-colors"
                 title={`Appeler (${service.providerPhone})`}
                 aria-label="Appeler le prestataire"
               >
@@ -177,7 +171,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
               {/* In-app Message */}
               <button
                 onClick={startInAppChat}
-                className="p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
+                className="p-1.5 rounded-lg bg-stone-100 text-stone-700 hover:bg-stone-200 transition-colors"
                 title="Message interne dans l'application"
                 aria-label="Envoyer un message interne"
               >
@@ -192,7 +186,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
               e.stopPropagation();
               setBookingService(service);
             }}
-            className="w-full py-2 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+            className="w-full py-2 px-3 rounded-xl bg-stone-900 hover:bg-[#B8522E] text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-xs"
           >
             <Calendar className="w-3.5 h-3.5" />
             <span>Demander un Rendez-vous</span>

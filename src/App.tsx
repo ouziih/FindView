@@ -17,15 +17,15 @@ import { BookingModal } from './components/BookingModal';
 import { ChatModal } from './components/ChatModal';
 import { NotificationDrawer } from './components/NotificationDrawer';
 import { AuthModal } from './components/AuthModal';
-import { Briefcase, Heart, ShieldCheck, MessageCircle, Sparkles } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 const AppContent: React.FC = () => {
   const { activeTab, setActiveTab, openAuthModal } = useApp();
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 font-sans selection:bg-amber-100 selection:text-amber-900">
+    <div className="min-h-screen flex flex-col bg-[#FBFBFA] text-stone-900 font-sans selection:bg-stone-200">
       
-      {/* Demonstration & Role Switcher Bar */}
+      {/* Demonstration & Role Switcher Studio Bar */}
       <RoleDemoBar />
 
       {/* Main Top Navigation */}
@@ -47,53 +47,48 @@ const AppContent: React.FC = () => {
       <NotificationDrawer />
       <AuthModal />
 
-      {/* Footer */}
-      <footer className="bg-slate-900 text-slate-400 border-t border-slate-800 text-xs py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      {/* Editorial Footer */}
+      <footer className="bg-[#18181B] text-stone-400 border-t border-stone-800 text-xs py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          
           {/* Brand col */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-white">
-                <Briefcase className="w-4 h-4" />
-              </div>
-              <span className="font-extrabold text-lg text-white tracking-tight">
-                Presta<span className="text-amber-500">Link</span>
-              </span>
+            <div className="font-extrabold text-lg text-white tracking-tight">
+              PrestaLink<span className="text-[#B8522E]">.</span>
             </div>
-            <p className="text-slate-400 leading-relaxed text-xs">
-              Plateforme moderne de mise en relation directe entre artisans qualifiés, gérants d'espaces, commerçants de proximité et clients.
+            <p className="text-stone-400 leading-relaxed text-xs">
+              Plateforme de mise en relation directe entre artisans qualifiés, gérants de locaux et clients. 0% de commission sur les prestations.
             </p>
-            <div className="flex items-center gap-2 text-[11px] text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
-              <span>Contrôle KYC & Modération Humaine</span>
+            <div className="flex items-center gap-1.5 text-[11px] text-stone-500">
+              <ShieldCheck className="w-3.5 h-3.5 text-stone-400" />
+              <span>Contrôle KYC & Agréments vérifiés</span>
             </div>
           </div>
 
           {/* Navigation col */}
           <div>
-            <span className="font-bold text-slate-200 uppercase text-[11px] tracking-wider block mb-3">
-              Navigation Rapide
+            <span className="font-bold text-stone-200 uppercase text-[10px] tracking-wider block mb-3">
+              Navigation
             </span>
             <ul className="space-y-2 text-xs">
               <li>
                 <button onClick={() => setActiveTab('home')} className="hover:text-white transition-colors">
-                  Explorer les prestations
+                  Explorer le catalogue
                 </button>
               </li>
               <li>
                 <button onClick={() => setActiveTab('appointments')} className="hover:text-white transition-colors">
-                  Espace Mes Rendez-vous
+                  Mes Rendez-vous
                 </button>
               </li>
               <li>
                 <button onClick={() => openAuthModal('prestataire')} className="hover:text-white transition-colors">
-                  Devenir Prestataire & Inscription
+                  Devenir Prestataire
                 </button>
               </li>
               <li>
-                <button onClick={() => setActiveTab('presentation')} className="text-purple-400 hover:text-purple-300 font-semibold transition-colors flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" />
-                  <span>Dossier Soutenance Orale</span>
+                <button onClick={() => setActiveTab('presentation')} className="text-stone-300 hover:text-white transition-colors">
+                  Fiche Soutenance Oral
                 </button>
               </li>
             </ul>
@@ -101,40 +96,35 @@ const AppContent: React.FC = () => {
 
           {/* Corps de Métiers */}
           <div>
-            <span className="font-bold text-slate-200 uppercase text-[11px] tracking-wider block mb-3">
-              Prestations Populaires
+            <span className="font-bold text-stone-200 uppercase text-[10px] tracking-wider block mb-3">
+              Métiers Référencés
             </span>
-            <ul className="space-y-2 text-xs text-slate-400">
-              <li>Menuiserie d'art & Cuisines sur-mesure</li>
-              <li>Lofts & Salles pour événements privatisés</li>
-              <li>Boutiques éphémères & Vente locale</li>
-              <li>Plomberie & Dépannage rapide</li>
-              <li>Réparation High-Tech & Informatique</li>
+            <ul className="space-y-2 text-xs text-stone-400">
+              <li>Menuiserie d'art & Cuisines</li>
+              <li>Lofts & Salles de réception</li>
+              <li>Boutiques artisanales & Pop-up</li>
+              <li>Dépannage & Travaux techniques</li>
+              <li>Informatique & Réparation</li>
             </ul>
           </div>
 
-          {/* Sécurité & Contact */}
+          {/* Engagement */}
           <div>
-            <span className="font-bold text-slate-200 uppercase text-[11px] tracking-wider block mb-3">
-              Engagement Qualité
+            <span className="font-bold text-stone-200 uppercase text-[10px] tracking-wider block mb-3">
+              Cadre & Transparence
             </span>
-            <p className="text-xs text-slate-400 leading-relaxed mb-3">
-              0% de commission sur vos devis chantiers. Échange direct via WhatsApp ou téléphone. Suivi des motifs de report et refus.
+            <p className="text-xs text-stone-400 leading-relaxed mb-3">
+              Échangez directement sur WhatsApp ou par téléphone. En cas de refus ou de décalage, un motif précis est obligatoirement fourni au client.
             </p>
-            <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700 text-[11px] text-amber-300">
-              Prêt pour la présentation académique et l'évaluation orale.
-            </div>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
+        <div className="max-w-6xl mx-auto pt-6 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-stone-500">
           <div>
-            © 2025 PrestaLink Platform. Tous droits réservés.
+            © 2025 PrestaLink. Tous droits réservés.
           </div>
-          <div className="flex items-center gap-1 text-slate-400">
-            <span>Conçu avec</span>
-            <Heart className="w-3 h-3 text-rose-500 fill-rose-500" />
-            <span>pour connecter les talents locaux et leurs clients.</span>
+          <div>
+            Conçu pour l'évaluation académique et la mise en relation d'artisans.
           </div>
         </div>
       </footer>

@@ -3,10 +3,8 @@ import { useApp } from '../context/AppContext';
 import { Service, PricingType } from '../types';
 import { 
   X, 
-  Sparkles, 
   Tag, 
   MapPin, 
-  Euro, 
   Image as ImageIcon, 
   Palette, 
   Check, 
@@ -25,16 +23,13 @@ const PRESET_IMAGES = [
   { label: 'Boutique Pop-up', url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80' },
   { label: 'High-Tech / Réparation', url: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&auto=format&fit=crop&q=80' },
   { label: 'Plomberie & Travaux', url: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&auto=format&fit=crop&q=80' },
-  { label: 'Beauté & Coiffure', url: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&auto=format&fit=crop&q=80' },
 ];
 
-const BADGE_COLORS = [
-  { label: 'Or / Ambre', class: 'bg-amber-600 text-white' },
-  { label: 'Émeraude / Vert', class: 'bg-emerald-600 text-white' },
-  { label: 'Indigo / Bleu nuit', class: 'bg-indigo-600 text-white' },
-  { label: 'Rose / Événement', class: 'bg-pink-600 text-white' },
-  { label: 'Pourpre Royal', class: 'bg-purple-600 text-white' },
-  { label: 'Noir Élégant', class: 'bg-slate-900 text-white' },
+const SIGNATURE_BADGE_STYLES = [
+  { label: 'Onyx Minimaliste', class: 'bg-stone-900 text-white' },
+  { label: 'Cognac Atelier', class: 'bg-[#B8522E] text-white' },
+  { label: 'Ardoise Foncée', class: 'bg-stone-800 text-stone-100' },
+  { label: 'Craie Travertin', class: 'bg-stone-200 text-stone-800' },
 ];
 
 export const CreateServiceModal: React.FC<CreateServiceModalProps> = ({ initialService, onClose }) => {
@@ -52,7 +47,7 @@ export const CreateServiceModal: React.FC<CreateServiceModalProps> = ({ initialS
   
   // Custom Identity / Branding
   const [badgeText, setBadgeText] = useState(initialService?.customBranding?.badgeText || 'Artisan Qualifié');
-  const [badgeColor, setBadgeColor] = useState(initialService?.customBranding?.badgeColor || BADGE_COLORS[0].class);
+  const [badgeColor, setBadgeColor] = useState(initialService?.customBranding?.badgeColor || SIGNATURE_BADGE_STYLES[0].class);
   
   const [selectedImage, setSelectedImage] = useState(initialService?.images[0] || PRESET_IMAGES[0].url);
   const [customImageUrl, setCustomImageUrl] = useState('');
@@ -116,37 +111,32 @@ export const CreateServiceModal: React.FC<CreateServiceModalProps> = ({ initialS
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-stone-950/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
       <div 
-        className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl relative border border-slate-200"
+        className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl relative border border-stone-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-slate-900 p-5 text-white flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="font-extrabold text-base">
-                {initialService ? 'Modifier la Prestation' : 'Créer & Personnaliser une Prestation'}
-              </h2>
-              <p className="text-xs text-slate-400">
-                Donnez une identité forte à votre offre pour attirer plus de clients
-              </p>
-            </div>
+        <div className="bg-[#18181B] p-5 text-white flex items-center justify-between border-b border-stone-800">
+          <div>
+            <h2 className="font-bold text-sm leading-tight">
+              {initialService ? 'Modifier la Prestation' : 'Nouvelle Prestation & Identité'}
+            </h2>
+            <p className="text-xs text-stone-400">
+              Configurez vos tarifs, zones d'intervention et badge personnalisé
+            </p>
           </div>
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white"
+            className="w-8 h-8 rounded-full bg-stone-800 hover:bg-stone-700 flex items-center justify-center text-stone-400 hover:text-white"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Scrollable Form */}
-        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto flex-1 space-y-4 text-xs">
           {errorMsg && (
             <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
@@ -154,222 +144,182 @@ export const CreateServiceModal: React.FC<CreateServiceModalProps> = ({ initialS
             </div>
           )}
 
-          {/* Intitulé & Catégorie */}
-          <div className="space-y-3">
+          <div>
+            <label className="block font-bold text-stone-800 mb-1">
+              Intitulé de la Prestation *
+            </label>
+            <input
+              type="text"
+              placeholder="Ex : Fabrication de Meubles Sur-Mesure / Location Loft / Réparation Express"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900 focus:outline-hidden focus:ring-1 focus:ring-stone-900 font-semibold"
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block font-bold text-slate-800 mb-1">
-                Titre du Service ou de la Prestation *
+              <label className="block font-bold text-stone-800 mb-1">
+                Catégorie *
               </label>
-              <input
-                type="text"
-                placeholder="Ex : Fabrication de Meubles Sur-Mesure / Location Loft / Réparation Express"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-amber-500 font-semibold"
-                required
-              />
+              <select
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-800 focus:outline-hidden focus:ring-1 focus:ring-stone-900 font-medium"
+              >
+                {categories.filter(c => c.isActive).map(cat => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="block font-bold text-slate-800 mb-1">
-                  Catégorie de prestation *
-                </label>
+            <div>
+              <label className="block font-bold text-stone-800 mb-1">
+                Mode de tarification & Prix *
+              </label>
+              <div className="flex gap-2">
                 <select
-                  value={categoryId}
-                  onChange={(e) => setCategoryId(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-amber-500 font-medium"
+                  value={pricingType}
+                  onChange={(e) => setPricingType(e.target.value as PricingType)}
+                  className="w-1/2 p-2.5 rounded-xl border border-stone-300 text-stone-800 focus:outline-hidden focus:ring-1 focus:ring-stone-900 font-medium"
                 >
-                  {categories.filter(c => c.isActive).map(cat => (
-                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                  ))}
+                  <option value="quote">Sur devis</option>
+                  <option value="hourly">À l'heure</option>
+                  <option value="daily">À la journée</option>
+                  <option value="fixed">Forfait fixe</option>
                 </select>
-              </div>
 
-              <div>
-                <label className="block font-bold text-slate-800 mb-1">
-                  Modèle de facturation & Prix *
-                </label>
-                <div className="flex gap-2">
-                  <select
-                    value={pricingType}
-                    onChange={(e) => setPricingType(e.target.value as PricingType)}
-                    className="w-1/2 p-2.5 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-amber-500 font-medium"
-                  >
-                    <option value="quote">Sur devis</option>
-                    <option value="hourly">À l'heure</option>
-                    <option value="daily">À la journée</option>
-                    <option value="fixed">Forfait fixe</option>
-                  </select>
-
-                  <div className="w-1/2 flex items-center gap-1 border border-slate-300 rounded-xl px-2.5 bg-slate-50">
-                    <span className="text-slate-400 font-bold">{currency}</span>
-                    <input
-                      type="number"
-                      min={0}
-                      value={price}
-                      onChange={(e) => setPrice(Number(e.target.value))}
-                      className="w-full bg-transparent p-1.5 text-xs text-slate-900 font-bold focus:outline-hidden"
-                      placeholder="Prix"
-                    />
-                  </div>
+                <div className="w-1/2 flex items-center gap-1 border border-stone-300 rounded-xl px-2.5 bg-stone-50">
+                  <span className="text-stone-400 font-bold">{currency}</span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={price}
+                    onChange={(e) => setPrice(Number(e.target.value))}
+                    className="w-full bg-transparent p-1 text-xs text-stone-900 font-bold focus:outline-hidden font-mono tabular-nums"
+                  />
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Personnalisation & Identité du Service */}
-          <div className="p-4 bg-amber-50/60 rounded-2xl border border-amber-200/80 space-y-3">
-            <div className="flex items-center gap-2 text-amber-900 font-bold text-xs">
-              <Palette className="w-4 h-4 text-amber-600" />
-              <span>Identité Visuelle & Badge Personnalisé (Customisation)</span>
-            </div>
-
+          {/* Badge de réassurance personnalisé */}
+          <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 space-y-2.5">
+            <span className="font-bold text-stone-800 block text-xs">Badge d'Accroche / Identité Visuelle</span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-slate-700 font-medium mb-1">
-                  Texte du Badge d'accroche (optionnel)
-                </label>
+                <label className="text-stone-500 font-medium block mb-1">Libellé du badge (optionnel)</label>
                 <input
                   type="text"
-                  placeholder="Ex : Artisan Élite, Coup de Cœur, Dispo Immédiate..."
+                  placeholder="Ex : Artisan Certifié, Coup de Cœur..."
                   value={badgeText}
                   onChange={(e) => setBadgeText(e.target.value)}
-                  className="w-full p-2 rounded-xl border border-slate-300 bg-white text-xs text-slate-800"
+                  className="w-full p-2 rounded-lg border border-stone-300 bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 font-medium mb-1">
-                  Couleur du Badge
-                </label>
-                <div className="flex items-center gap-1.5 pt-1">
-                  {BADGE_COLORS.map((b, i) => (
+                <label className="text-stone-500 font-medium block mb-1">Style de finition</label>
+                <div className="flex items-center gap-2 pt-0.5">
+                  {SIGNATURE_BADGE_STYLES.map((b, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => setBadgeColor(b.class)}
-                      className={`h-7 w-7 rounded-lg ${b.class} flex items-center justify-center transition-transform ${
-                        badgeColor === b.class ? 'ring-2 ring-slate-900 scale-110' : 'opacity-80'
+                      className={`h-7 px-2.5 rounded-md ${b.class} text-[10px] font-bold flex items-center gap-1 transition-all ${
+                        badgeColor === b.class ? 'ring-2 ring-stone-900' : 'opacity-80'
                       }`}
-                      title={b.label}
                     >
-                      {badgeColor === b.class && <Check className="w-3.5 h-3.5" />}
+                      {b.label}
+                      {badgeColor === b.class && <Check className="w-3 h-3 ml-0.5" />}
                     </button>
                   ))}
                 </div>
               </div>
             </div>
-
-            {/* Live Preview */}
-            <div className="pt-1 flex items-center gap-2 text-[11px] text-slate-600">
-              <span>Aperçu de votre badge :</span>
-              {badgeText ? (
-                <span className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] shadow-xs ${badgeColor}`}>
-                  {badgeText}
-                </span>
-              ) : (
-                <span className="italic text-slate-400">Aucun badge</span>
-              )}
-            </div>
           </div>
 
           {/* Description */}
           <div>
-            <label className="block font-bold text-slate-800 mb-1">
-              Description complète de la prestation *
+            <label className="block font-bold text-stone-800 mb-1">
+              Description détaillée *
             </label>
             <textarea
               rows={4}
-              placeholder="Détaillez vos compétences, matériaux utilisés, équipements, conditions et délais..."
+              placeholder="Détaillez vos prestations, savoir-faire, matériaux utilisés et délais..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-3 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-amber-500"
+              className="w-full p-3 rounded-xl border border-stone-300 text-stone-900 focus:outline-hidden focus:ring-1 focus:ring-stone-900 leading-relaxed"
               required
             />
           </div>
 
-          {/* Localisation & Tags */}
+          {/* Location & Tags */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block font-bold text-slate-800 mb-1 flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-amber-600" />
-                Ville & Rayon d'intervention
+              <label className="block font-bold text-stone-800 mb-1 flex items-center gap-1">
+                <MapPin className="w-3.5 h-3.5 text-stone-400" />
+                Ville & Rayon de déplacement *
               </label>
               <input
                 type="text"
                 placeholder="Ex : Lyon et 40km alentours"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-slate-300 text-xs text-slate-900"
+                className="w-full p-2 rounded-xl border border-stone-300"
                 required
               />
             </div>
 
             <div>
-              <label className="block font-bold text-slate-800 mb-1 flex items-center gap-1">
-                <Tag className="w-3.5 h-3.5 text-amber-600" />
-                Mots-clés / Tags (séparés par des virgules)
+              <label className="block font-bold text-stone-800 mb-1 flex items-center gap-1">
+                <Tag className="w-3.5 h-3.5 text-stone-400" />
+                Mots-clés (séparés par virgule)
               </label>
               <input
                 type="text"
-                placeholder="Chêne, Sur-mesure, Cuisine, Urgence..."
                 value={tagsInput}
                 onChange={(e) => setTagsInput(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-slate-300 text-xs text-slate-900"
+                className="w-full p-2 rounded-xl border border-stone-300"
               />
             </div>
           </div>
 
-          {/* Choix de photo */}
+          {/* Choix d'illustration */}
           <div>
-            <label className="block font-bold text-slate-800 mb-1 flex items-center gap-1">
-              <ImageIcon className="w-3.5 h-3.5 text-amber-600" />
-              Illustration du service (Galerie sélectionnable)
+            <label className="block font-bold text-stone-800 mb-1 flex items-center gap-1">
+              <ImageIcon className="w-3.5 h-3.5 text-stone-400" />
+              Illustration du service
             </label>
-            
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-2">
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-2">
               {PRESET_IMAGES.map((img, i) => (
                 <button
                   key={i}
                   type="button"
-                  onClick={() => {
-                    setSelectedImage(img.url);
-                    setCustomImageUrl('');
-                  }}
-                  className={`relative rounded-xl overflow-hidden h-16 border-2 transition-all group ${
-                    selectedImage === img.url && !customImageUrl ? 'border-amber-600 ring-2 ring-amber-400' : 'border-transparent opacity-75'
+                  onClick={() => { setSelectedImage(img.url); setCustomImageUrl(''); }}
+                  className={`relative rounded-lg overflow-hidden h-14 border transition-all ${
+                    selectedImage === img.url && !customImageUrl ? 'ring-2 ring-stone-900' : 'opacity-70'
                   }`}
                 >
-                  <img src={img.url} alt={img.label} className="w-full h-full object-cover" />
-                  <span className="absolute inset-0 bg-slate-900/40 text-[9px] text-white flex items-end p-1 font-semibold">
-                    {img.label}
-                  </span>
+                  <img src={img.url} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
-
-            <input
-              type="url"
-              placeholder="Ou collez une URL d'image personnalisée (https://...)"
-              value={customImageUrl}
-              onChange={(e) => setCustomImageUrl(e.target.value)}
-              className="w-full p-2 rounded-xl border border-slate-300 text-[11px] text-slate-700"
-            />
           </div>
 
           {/* Submit */}
-          <div className="pt-3 border-t border-slate-200 flex items-center justify-end gap-3">
+          <div className="pt-3 border-t border-stone-200 flex items-center justify-end gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100"
+              className="px-4 py-2 rounded-xl text-stone-600 hover:bg-stone-100 font-semibold"
             >
               Annuler
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-md transition-colors"
+              className="px-6 py-2.5 rounded-xl bg-stone-900 hover:bg-[#B8522E] text-white font-bold transition-colors shadow-xs"
             >
               {initialService ? 'Enregistrer les modifications' : 'Publier la prestation'}
             </button>
