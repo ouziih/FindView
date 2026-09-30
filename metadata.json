@@ -1,0 +1,6 @@
+{
+  "name": "PrestaLink - Mise en Relation Prestataires & Clients",
+  "description": "Plateforme tout-en-un de mise en relation entre artisans, prestataires de services et clients avec prise de rendez-vous, notifications et modération.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
